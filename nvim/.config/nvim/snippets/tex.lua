@@ -1,0 +1,129 @@
+local ls = require("luasnip")
+local s = ls.snippet
+local t = ls.text_node
+local i = ls.insert_node
+local f = ls.function_node
+local c = ls.choice_node
+local d = ls.dynamic_node
+local r = ls.restore_node
+local fmt = require("luasnip.extras.fmt").fmt
+local rep = require("luasnip.extras").rep
+
+return {
+
+    s("beg", fmt(
+        [[
+        \begin{{{}}}
+            {}
+        \end{{{}}}
+        ]], {
+            i(1), i(0), rep(1)
+        }
+    )),
+
+    s("frac", fmt(
+        [[
+        \frac{{{}}}{{{}}}
+        ]], {
+            i(1), i(2)
+        }
+    )),
+
+    s("template", fmt(
+        [[
+        \documentclass{{article}}
+
+        \title{{{}}}
+        \date{{\today}}
+
+        \begin{{document}}
+
+        \maketitle
+
+        \section{{{}}}
+
+        \end{{document}}
+
+        \end{{article}}
+        ]], {
+            i(1), i(2)
+        }
+    )),
+
+    s("sec", fmt(
+        [[
+        \section{{{}}}
+        ]], {
+            i(1)
+        }
+    )),
+
+    s("math", fmt(
+        [[
+        \begin{{math}}
+            {}
+        \end{{math}}
+        ]], {
+            i(0)
+        }
+    )),
+
+    s("doc", fmt(
+        [[
+        \begin{{document}}
+            {}
+        \end{{document}}
+        ]], {
+            i(0)
+        }
+    )),
+
+    s("2matrix", fmt(
+        [[
+        \begin{{bmatrix}}
+            {} & {} \\
+            {} & {}
+        \end{{bmatrix}}
+        ]], {
+            i(1), i(2),
+            i(3), i(4),
+        }
+    )),
+
+    s("3matrix", fmt(
+        [[
+        \begin{{bmatrix}}
+            {} & {} & {} \\
+            {} & {} & {} \\
+            {} & {} & {}
+        \end{{bmatrix}}
+        ]], {
+            i(1), i(2), i(3),
+            i(4), i(5), i(6),
+            i(7), i(8), i(9),
+        }
+    )),
+
+    s("ls", fmt(
+        [[
+        \begin{{itemize}}
+            \item {}
+        \end{{itemize}}
+        ]], {
+            i(1)
+        }
+    )),
+
+    s("import math", {
+        t("\\usepackage{amsmath}"),
+    }),
+
+    s("import image", {
+        t("\\usepackage{graphicx}"),
+    }),
+
+    s("import links", {
+        t("\\usepackage{hyperref}"),
+    }),
+
+}
