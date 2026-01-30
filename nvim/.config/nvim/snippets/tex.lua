@@ -31,9 +31,12 @@ return {
 
     s("template", fmt(
         [[
-        \documentclass{{article}}
+        \documentclass[12pt]{{article}}
+
+        \usepackage[margin=1in]{{geometry}}
 
         \title{{{}}}
+        \author{{Jacky Lin}}
         \date{{\today}}
 
         \begin{{document}}
@@ -104,7 +107,7 @@ return {
         }
     )),
 
-    s("ls", fmt(
+    s("item", fmt(
         [[
         \begin{{itemize}}
             \item {}
@@ -125,5 +128,43 @@ return {
     s("import links", {
         t("\\usepackage{hyperref}"),
     }),
+
+    s("import enumitem", {
+        t("\\usepackage{enumitem}"),
+    }),
+
+    s("P union", fmt(
+        [[
+        P({} \cup {})
+        ]], {
+            i(1), i(2)
+        }
+    )),
+
+    s("P intersection", fmt(
+        [[
+        P({} \cap {})
+        ]], {
+            i(1), i(2)
+        }
+    )),
+
+    s("enumerate", fmt(
+        [[
+        \begin{{enumerate}}[label=\alph*.)]
+            \item {}
+        \end{{enumerate}}
+        ]], {
+            i(0)
+        }
+    )),
+
+    s("P conditional", fmt(
+        [[
+        P({} \mid {})
+        ]], {
+            i(1), i(2)
+        }
+    )),
 
 }

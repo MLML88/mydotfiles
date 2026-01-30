@@ -49,3 +49,6 @@ set highlight-active-color "#9ece6a"
 set window-title-home-tilde true
 set adjust-open "best-fit"
 set pages-per-row 1
+
+# Clipboard
+set selection-clipboard clipboard
