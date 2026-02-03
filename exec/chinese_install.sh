@@ -7,10 +7,12 @@ yay -S adobe-source-han-sans-cn-fonts adobe-source-han-serif-cn-fonts --needed
 yay -S fcitx5 fcitx5-gtk fcitx5-qt fcitx5-configtool fcitx5-chinese-addons --needed
 
 if [ ! -d "$HOME/fcitx5/" ]; then
-    git clone https://github.com/catppuccin/fcitx5.git ~
+    git clone https://github.com/catppuccin/fcitx5.git ~/fcitx5
     mkdir -p ~/.local/share/fcitx5/themes/
+    ~/fcitx5/enable-rounded.sh
     cp -r ~/fcitx5/src/* ~/.local/share/fcitx5/themes
     echo "In ~/.config/fcitx5/conf/classicui.conf add Theme=catppuccin-mocha-blue"
 else
     echo "fcitx5 theme already exist"
 fi
+echo "Also add 'exec-once = fcitx5' to your hyprland conf"
