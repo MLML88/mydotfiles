@@ -167,4 +167,20 @@ return {
         }
     )),
 
+    s("addtocounter", fmt(
+        [[
+        \addtocounter{{enumi}}{{{}}}
+        ]], {
+            i(0)
+        }
+    )),
+
+    s("combination", fmt(
+        [[
+        \binom{{{}}}{{{}}}
+        ]], {
+            i(1), i(2)
+        }
+    )),
+
 }
