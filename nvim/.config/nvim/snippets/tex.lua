@@ -149,9 +149,19 @@ return {
         }
     )),
 
-    s("enumerate", fmt(
+    s("alph", fmt(
         [[
         \begin{{enumerate}}[label=\alph*.)]
+            \item {}
+        \end{{enumerate}}
+        ]], {
+            i(0)
+        }
+    )),
+
+    s("roman", fmt(
+        [[
+        \begin{{enumerate}}[label=\roman*.)]
             \item {}
         \end{{enumerate}}
         ]], {

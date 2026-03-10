@@ -10,6 +10,7 @@ local set = {
     smartindent = true,
 
     wrap = false,
+    clipboard = "unnamedplus",
 
     swapfile = false,
     backup = false,
@@ -29,3 +30,15 @@ for key, value in pairs(set) do
     vim.opt[key] = value
 end
 
+vim.g.clipboard = {
+    name = "win32yank.wsl",
+    copy = {
+        ["+"] = "win32yank.exe -i --crlf",
+        ["*"] = "win32yank.exe -i --crlf",
+    },
+    paste = {
+        ["+"] = "win32yank.exe -o --lf",
+        ["*"] = "win32yank.exe -o --lf",
+    },
+    cache_enabled = 0,
+}
