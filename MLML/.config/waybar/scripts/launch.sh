@@ -1,5 +1,8 @@
 #!/bin/bash
 
-killall -9 waybar
+killall waybar
+killall swaync
+
 waybar &
+swaync &
 

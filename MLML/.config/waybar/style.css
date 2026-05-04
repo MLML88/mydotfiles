@@ -6,14 +6,14 @@
 }
 
 tooltip {
-    background-color: @bg1;
-    color: @fg;
+    background-color: @tokyo-background;
+    color: @tokyo-purple;
     border-radius: 12px;
 }
 
 .modules-center {
-    background-color: @bg1;
-    color: @fg;
+    background-color: @tokyo-background;
+    color: @tokyo-purple;
     padding: 4px 18px;
     border-radius: 99px;
 }
@@ -24,7 +24,7 @@ tooltip {
 
 #workspaces {
     min-width: 100px;
-    background-color: @bg2;
+    background-color: @tokyo-background;
     font-size: 0.95rem;
     padding: 2px 3px;
     margin: 2px 0;
@@ -32,21 +32,25 @@ tooltip {
 }
 
 #workspaces button {
-    background-color: @bg3;
+    background-color: @tokyo-purple;
+    color: @tokyo-background;
     padding: 0px 5px;
     border-radius: 99px;
     margin: 0 2px;
     transition: all 300ms ease-in-out;
-    min-width: 7px;
+    min-width: 1rem;
 }
 
-#workspaces button.empty {
-    color: @grey0;
-}
+/* #workspaces button.persistent { */
+/*     color: @tokyo-background; */
+/* } */
+/**/
+/* #workspaces button.empty { */
+/*     color: @tokyo-background; */
+/* } */
 
 #workspaces button.active {
-    background-color: @green;
-    color: @bg1;
+    background-color: @tokyo-blue;
     min-width: 1.5rem;
     font-weight: 500;
     transition: none;
