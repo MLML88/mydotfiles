@@ -285,6 +285,31 @@ return {
             },
         })
 
+        -- qml (qmlls)
+        vim.lsp.config("qmlls", {
+            filetypes = { "qml", "qmljs" },
+
+            cmd = {
+                "qmlls",
+                "-I", "/usr/lib/qt6/qml",
+            }, -- make sure qmlls is in your PATH
+
+            root_markers = {
+                ".git",
+                "qmldir",
+                "CMakeLists.txt",
+                "shell.qml",
+            },
+
+            settings = {
+                Qml = {
+                    completion = {
+                        autoImport = true,
+                    },
+                },
+            },
+        })
+
         -- Instead of using mason enable all configured LSP via `automatic_enable=true`
         -- Prefer more control by enable manual server call below via vim.lsp.enable("")
         -- mason config: lua/sethy/plugins/lsp/mason.lua:22
@@ -298,6 +323,7 @@ return {
             "tailwindcss",
             "marksman",
             "pyright",
+            "qmlls",
         })
     end,
 }
