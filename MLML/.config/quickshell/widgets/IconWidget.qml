@@ -6,20 +6,17 @@ import "../themes/"
 Item {
     id: root
 
-    implicitWidth: 40
+    implicitWidth: icon.implicitWidth + 25
     implicitHeight: 32
 
     Pill {
         anchors.fill: parent
 
-        Text {
+        TextField {
+            id: icon
             anchors.centerIn: parent
             text: "󰣇"
-            color: TokyoNight.textCol
-            font {
-                pixelSize: TokyoNight.pixelSize + 5
-                family: TokyoNight.family
-            }
+            font.pixelSize: TokyoNight.pixelSize + 5
         }
     }
 }

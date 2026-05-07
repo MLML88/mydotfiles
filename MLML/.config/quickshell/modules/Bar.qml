@@ -60,6 +60,12 @@ Scope {
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: TokyoNight.pillSpacing
 
+                VolumeWidget {
+                    Layout.preferredHeight: bar.height * 0.85
+                }
+                BatteryWidget {
+                    Layout.preferredHeight: bar.height * 0.85
+                }
            }
         }
     }

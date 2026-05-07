@@ -1,4 +1,3 @@
-import Quickshell
 import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
@@ -9,19 +8,20 @@ import "../themes/"
 Item {
     id: root
 
-    implicitWidth: 200
+    implicitWidth: workspacesRow.implicitWidth + 25
     implicitHeight: 32
 
     required property string monitorName
     property var workspaceSet:
         monitorName === "HDMI-A-1" ? [1, 2, 3, 4, 5]
         : monitorName === "eDP-2" ? [6, 7, 8, 9, 10]
-        : []
+        : [1, 2, 3, 4, 5]
 
     Pill {
         anchors.fill: root
 
         RowLayout {
+            id: workspacesRow
             spacing: 5
             anchors.centerIn: parent
 
@@ -35,8 +35,8 @@ Item {
                     property var workspace: Hyprland.workspaces.values.find(w => w.id === modelData)
                     property bool active: Hyprland.focusedWorkspace?.id === modelData
 
-                    implicitWidth: active ? 40 : 30
-                    implicitHeight: 20
+                    implicitWidth: active ? 50 : 30
+                    implicitHeight: root.implicitHeight * 0.65
 
                     color: active ? TokyoNight.activeCol : TokyoNight.textCol
 

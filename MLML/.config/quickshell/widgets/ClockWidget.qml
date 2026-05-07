@@ -3,28 +3,22 @@ import QtQuick
 
 import "../services/"
 import "../components/"
-import "../themes/"
 
 Item {
     id: root
 
     property bool popupOpen: false
 
-    implicitWidth: 100
+    implicitWidth: clock.implicitWidth + 25
     implicitHeight: 32
 
     Pill {
         anchors.fill: root
 
         // Clock
-        Text {
+        TextField {
+            id: clock
             anchors.centerIn: parent
-            color: TokyoNight.textCol
-            font {
-                pixelSize: TokyoNight.pixelSize
-                weight: TokyoNight.weight
-                family: TokyoNight.family
-            }
             text: Time.time
         }
 
@@ -44,22 +38,16 @@ Item {
         anchor.rect.x: root.width / 2 - width / 2
         anchor.rect.y: root.height
 
-        width: 160
-        height: root.height * 0.85
+        implicitWidth: 160
+        implicitHeight: root.height * 0.85
         color: "transparent"
         visible: root.popupOpen
 
         Pill {
             anchors.fill: parent
 
-            Text {
+            TextField {
                 anchors.centerIn: parent
-                color: TokyoNight.textCol
-                font {
-                    pixelSize: 16
-                    weight: 650
-                    family: "Rubik"
-                }
                 text: Time.date
             }
         }
