@@ -12,6 +12,12 @@ Item {
     implicitWidth: 200
     implicitHeight: 32
 
+    required property string monitorName
+    property var workspaceSet:
+        monitorName === "HDMI-A-1" ? [1, 2, 3, 4, 5]
+        : monitorName === "eDP-2" ? [6, 7, 8, 9, 10]
+        : []
+
     Pill {
         anchors.fill: root
 
@@ -20,14 +26,14 @@ Item {
             anchors.centerIn: parent
 
             Repeater {
-                model: 5
+                model: root.workspaceSet
 
                 Pill {
                     id: ws
-                    required property int index
+                    required property int modelData
 
-                    property var workspace: Hyprland.workspaces.values.find(w => w.id === index + 1)
-                    property bool active: Hyprland.focusedWorkspace?.id === index + 1
+                    property var workspace: Hyprland.workspaces.values.find(w => w.id === modelData)
+                    property bool active: Hyprland.focusedWorkspace?.id === modelData
 
                     implicitWidth: active ? 40 : 30
                     implicitHeight: 20
@@ -50,7 +56,7 @@ Item {
 
                     Text {
                         anchors.centerIn: parent
-                        text: ws.index + 1
+                        text: ws.modelData
                         color: TokyoNight.background
                         font {
                             pixelSize: TokyoNight.pixelSize
@@ -66,7 +72,7 @@ Item {
                             if (ws.workspace)
                             ws.workspace.activate()
                             else
-                            Hyprland.dispatch("workspace " + (ws.index + 1))
+                            Hyprland.dispatch("workspace " + ws.modelData)
                         }
                     }
                 }

@@ -9,6 +9,7 @@ abbr -a ga git add .
 abbr -a gc git commit -a
 abbr -a gp git push
 abbr -a gpl git pull
+abbr -a lg lazygit
 
 abbr -a ll ls -alF
 

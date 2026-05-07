@@ -45,6 +45,7 @@ Scope {
                     Layout.preferredHeight: bar.height * 0.85
                 }
                 WorkspacesWidget {
+                    monitorName: screen.name
                     Layout.preferredHeight: bar.height * 0.85
                 }
             }
