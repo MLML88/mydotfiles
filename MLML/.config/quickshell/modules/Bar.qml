@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 
 import "../widgets/"
+import "../themes/"
 
 Scope {
     Variants {
@@ -32,14 +33,17 @@ Scope {
             RowLayout {
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 5
+                spacing: TokyoNight.pillSpacing
 
+                IconWidget {
+                    Layout.preferredHeight: bar.height * 0.85
+                }
             }
 
             // Middle Bar
             RowLayout {
                 anchors.centerIn: parent
-                spacing: 5
+                spacing: TokyoNight.pillSpacing
 
                 ClockWidget {
                     Layout.preferredHeight: bar.height * 0.85
@@ -54,7 +58,7 @@ Scope {
             RowLayout {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: 5
+                spacing: TokyoNight.pillSpacing
 
            }
         }

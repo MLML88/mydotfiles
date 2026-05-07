@@ -70,9 +70,9 @@ Item {
 
                         onClicked: {
                             if (ws.workspace)
-                            ws.workspace.activate()
+                                ws.workspace.activate()
                             else
-                            Hyprland.dispatch("workspace " + ws.modelData)
+                                Hyprland.dispatch("workspace " + ws.modelData)
                         }
                     }
                 }
