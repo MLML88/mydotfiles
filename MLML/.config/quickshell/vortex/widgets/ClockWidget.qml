@@ -7,8 +7,6 @@ import "../components/"
 Item {
     id: root
 
-    property bool popupOpen: false
-
     implicitWidth: clock.implicitWidth + 25
     implicitHeight: 32
 
@@ -22,31 +20,28 @@ Item {
             text: Time.time
         }
 
-        MouseArea {
-            anchors.fill: parent
-            hoverEnabled: true
-
-            onEntered: root.popupOpen = true
-            onExited: root.popupOpen = false
+        DelayHover {
+            delayedHover: datePopup
         }
     }
 
-    // Date popup
+    // Date Popup
     PopupWindow {
-        anchor.item: root
+        id: datePopup
 
+        anchor.item: root
         anchor.rect.x: root.width / 2 - width / 2
         anchor.rect.y: root.height
 
-        implicitWidth: 160
-        implicitHeight: root.height * 0.85
+        implicitWidth: dateText.implicitWidth + 25
+        implicitHeight: root.implicitHeight
         color: "transparent"
-        visible: root.popupOpen
 
         Pill {
             anchors.fill: parent
 
             TextField {
+                id: dateText
                 anchors.centerIn: parent
                 text: Time.date
             }

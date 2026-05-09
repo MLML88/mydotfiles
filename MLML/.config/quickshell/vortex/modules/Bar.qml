@@ -26,7 +26,7 @@ Scope {
                 right: 15
             }
 
-            implicitHeight: 40
+            implicitHeight: 35
             color: "transparent"
 
             // Left Bar
@@ -36,7 +36,7 @@ Scope {
                 spacing: TokyoNight.pillSpacing
 
                 IconWidget {
-                    Layout.preferredHeight: bar.height * 0.85
+                    Layout.preferredHeight: bar.implicitHeight
                 }
             }
 
@@ -46,11 +46,11 @@ Scope {
                 spacing: TokyoNight.pillSpacing
 
                 ClockWidget {
-                    Layout.preferredHeight: bar.height * 0.85
+                    Layout.preferredHeight: bar.implicitHeight
                 }
                 WorkspacesWidget {
                     monitorName: screen.name
-                    Layout.preferredHeight: bar.height * 0.85
+                    Layout.preferredHeight: bar.implicitHeight
                 }
             }
 
@@ -61,10 +61,13 @@ Scope {
                 spacing: TokyoNight.pillSpacing
 
                 VolumeWidget {
-                    Layout.preferredHeight: bar.height * 0.85
+                    Layout.preferredHeight: bar.implicitHeight
                 }
                 BatteryWidget {
-                    Layout.preferredHeight: bar.height * 0.85
+                    Layout.preferredHeight: bar.implicitHeight
+                }
+                NotificationWidget {
+                    Layout.preferredHeight: bar.implicitHeight
                 }
            }
         }
