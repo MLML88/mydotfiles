@@ -63,6 +63,9 @@ Scope {
                 VolumeWidget {
                     Layout.preferredHeight: bar.implicitHeight
                 }
+                NetworkWidget {
+                    Layout.preferredHeight: bar.implicitHeight
+                }
                 BatteryWidget {
                     Layout.preferredHeight: bar.implicitHeight
                 }

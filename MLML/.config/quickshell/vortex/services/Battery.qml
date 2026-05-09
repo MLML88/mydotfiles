@@ -5,8 +5,9 @@ import Quickshell.Services.UPower
 import QtQuick
 
 Singleton {
-    property var battery: UPower.displayDevice
+    id: root
 
+    property var battery: UPower.displayDevice
     property var batteryIcons: [
         {limit: 1.0, icon: "󰁹"},
         {limit: 0.9, icon: "󰂂"},
