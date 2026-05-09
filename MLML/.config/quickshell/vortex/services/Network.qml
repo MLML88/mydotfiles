@@ -21,7 +21,7 @@ Singleton {
 
     function getNetworkIcon() {
         if (!currentNetwork)
-            return networkIcons.find(n => n.limit === 0)
+            return networkIcons.find(n => n.limit === 0).icon
 
         for (const entry of networkIcons) {
             if (signalStrength >= entry.limit)

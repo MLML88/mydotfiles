@@ -56,7 +56,7 @@ Singleton {
 
     function getBluetoothIcon() {
         if (!btDevice)
-            return bluetoothIcons.find(b => b.limit === 0)
+            return bluetoothIcons.find(b => b.limit === 0).icon
 
         const percent = btDevice.battery
 

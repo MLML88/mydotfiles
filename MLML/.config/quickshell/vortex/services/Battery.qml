@@ -24,7 +24,7 @@ Singleton {
 
     function getBatteryIcon() {
         if (!battery)
-            return batteryIcons.find(b => b.limit === 0)
+            return batteryIcons.find(b => b.limit === 0).icon
 
         const percent = battery.percentage
 
@@ -39,22 +39,27 @@ Singleton {
             return "Battery Error"
 
         const state = battery.state
+        var hours = 0
+        var mins = 0
 
-        if (state === UPowerDeviceState.Charging) {
-            const hours = Math.floor(battery.timeToFull / 3600)
-            const mins = Math.floor((battery.timeToFull % 3600) / 60)
+        switch (state) {
+            case UPowerDeviceState.Charging:
+                hours = Math.floor(battery.timeToFull / 3600)
+                mins = Math.floor((battery.timeToFull % 3600) / 60)
 
-            return `Full in ${hours} hr ${mins} min`
+                return `Full in ${hours} hr ${mins} min`
+
+            case UPowerDeviceState.Discharging:
+                hours = Math.floor(battery.timeToEmpty / 3600)
+                mins = Math.floor((battery.timeToEmpty % 3600) / 60)
+
+                return `Empty in ${hours} hr ${mins} min`
+
+            case UPowerDeviceState.FullyCharged:
+                return "Fully Charged"
+
+            default:
+                return "Unknown State"
         }
-
-        if (state === UPowerDeviceState.Discharging) {
-            const hours = Math.floor(battery.timeToEmpty / 3600)
-            const mins = Math.floor((battery.timeToEmpty % 3600) / 60)
-
-            return `Empty in ${hours} hr ${mins} min`
-        }
-
-        if (state === UPowerDeviceState.FullyCharged)
-            return "Fully Charged"
     }
 }
