@@ -38,6 +38,9 @@ Scope {
                 IconWidget {
                     Layout.preferredHeight: bar.implicitHeight
                 }
+                ActiveWindowWidget {
+                    Layout.preferredHeight: bar.implicitHeight
+                }
             }
 
             // Middle Bar
