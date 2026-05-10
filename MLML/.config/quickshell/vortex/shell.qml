@@ -4,4 +4,5 @@ import "./modules/"
 ShellRoot {
     Bar {}
     VolumePopup {}
+    NightModeMenu {}
 }
