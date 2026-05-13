@@ -33,7 +33,7 @@ Item {
 
             // Battery Percentage
             TextField {
-                text: Battery.battery ? (Battery.battery.percentage * 100) + "%" : "--%"
+                text: Battery.battery ? Math.round(Battery.battery.percentage * 100) + "%" : "--%"
             }
 
         }
