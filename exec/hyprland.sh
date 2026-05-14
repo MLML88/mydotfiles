@@ -12,7 +12,7 @@ yay -S --needed nautilus ddcutil pavucontrol awww
 # waybar - Simple bar maker
 # wlogout - Simple logout menu
 # quickshell - More advanced, able to make bar, notification, launcher menu, and etc
-yay -S --needed waybar wlogout quickshell hyprlock hyprsunset quickshell-git
+yay -S --needed waybar wlogout hyprlock hyprsunset quickshell-git
 
 # Install Essentials
 # swaync - Used for notification panel
