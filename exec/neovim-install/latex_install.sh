@@ -1,9 +1,5 @@
 yay -Sy
 
-yay -S stow --needed
-
-yay -S ripgrep fd --needed
-
 yay -S zathura zathura-pdf-poppler --needed
 
 yay -S texlive-core texlive-latex texlive-binextra texlive-latexextra --needed

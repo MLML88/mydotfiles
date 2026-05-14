@@ -11,6 +11,10 @@ abbr -a gp git push
 abbr -a gpl git pull
 abbr -a lg lazygit
 
+function set-wall
+    awww img $argv[1] --transition-type grow --transition-duration 2
+end
+
 abbr -a ll ls -alF
 
 abbr -a so source ./venv/bin/activate.fish

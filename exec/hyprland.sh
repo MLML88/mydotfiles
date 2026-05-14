@@ -12,13 +12,13 @@ yay -S --needed nautilus ddcutil pavucontrol awww
 # waybar - Simple bar maker
 # wlogout - Simple logout menu
 # quickshell - More advanced, able to make bar, notification, launcher menu, and etc
-yay -S --needed waybar wlogout quickshell hyprlock
+yay -S --needed waybar wlogout quickshell hyprlock hyprsunset quickshell-git
 
 # Install Essentials
 # swaync - Used for notification panel
 # cliphist, wl-clipboard, wl-clip-persist - Used for copy clipboard
 # hyprshot - Used for screenshots
-yay -S --needed swaync cliphist wl-clipboard wl-clip-persist hyprshot
+yay -S --needed swaync cliphist wl-clipboard wl-clip-persist hyprshot lazygit
 
 # Install bluetooth
 yay -S --needed bluez bluez-utils blueman
