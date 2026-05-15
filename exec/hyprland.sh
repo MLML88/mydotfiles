@@ -6,13 +6,13 @@ yay -Sy
 # ddcutil - Command-line for brightness, color, and input source
 # pavucontrol - PulseAudio
 # awww - Wallpaper tool
-yay -S --needed nautilus ddcutil pavucontrol awww
+yay -S --needed nautilus ddcutil pavucontrol awww neovim fish
 
 # Install configuration tools
 # waybar - Simple bar maker
 # wlogout - Simple logout menu
 # quickshell - More advanced, able to make bar, notification, launcher menu, and etc
-yay -S --needed waybar wlogout hyprlock hyprsunset quickshell-git
+yay -S --needed waybar wlogout hyprlock hyprsunset quickshell-git rofi
 
 # Install Essentials
 # swaync - Used for notification panel
