@@ -15,6 +15,7 @@ Item {
     property var workspaceSet:
         monitorName === "HDMI-A-1" ? [1, 2, 3, 4, 5]
         : monitorName === "eDP-1" ? [6, 7, 8, 9, 10]
+        : monitorName === "eDP-2" ? [6, 7, 8, 9, 10]
         : [1, 2, 3, 4, 5]
 
     Pill {
