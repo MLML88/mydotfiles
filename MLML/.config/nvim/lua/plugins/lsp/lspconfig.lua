@@ -121,18 +121,25 @@ return {
         -- Configure and enable LSP servers
         -- lua_ls
         vim.lsp.config("lua_ls", {
+            cmd = {
+                vim.fn.exepath("lua-language-server"),
+            },
+
             settings = {
                 Lua = {
                     diagnostics = {
-                        globals = { "vim" },
+                        globals = { "vim", "hl" },
                     },
+
                     completion = {
                         callSnippet = "Replace",
                     },
+
                     workspace = {
                         library = {
                             [vim.fn.expand("$VIMRUNTIME/lua")] = true,
                             [vim.fn.stdpath("config") .. "/lua"] = true,
+                            ["/usr/share/hypr/stubs"] = true,
                         },
                     },
                 },
@@ -141,6 +148,8 @@ return {
 
         -- emmet_language_server
         vim.lsp.config("emmet_language_server", {
+            cmd = { vim.fn.exepath("emmet-language-server") },
+
             filetypes = {
                 "css",
                 "html",
@@ -149,6 +158,7 @@ return {
                 "less",
                 "typescriptreact",
             },
+
             init_options = {
                 includeLanguages = {},
                 excludeLanguages = {},
@@ -178,19 +188,27 @@ return {
 
         -- ts_ls (TypeScript/JavaScript)
         vim.lsp.config("ts_ls", {
+            cmd = {
+                vim.fn.exepath("typescript-language-server"),
+                "--stdio",
+            },
+
             filetypes = {
                 "javascript",
                 "javascriptreact",
                 "typescript",
                 "typescriptreact",
             },
+
             single_file_support = true,
+
             init_options = {
                 preferences = {
                     includeCompletionsForModuleExports = true,
                     includeCompletionsForImportStatements = true,
                 },
             },
+
             settings = {
                 typescript = {
                     inlayHints = {
@@ -199,10 +217,12 @@ return {
                         includeInlayFunctionParameterTypeHints = true,
                     },
                 },
+
                 javascript = {
                     validate = {
                         enable = true,
                     },
+
                     inlayHints = {
                         includeInlayParameterNameHints = "all",
                         includeInlayVariableTypeHints = true,
@@ -213,33 +233,42 @@ return {
 
         -- css
         vim.lsp.config("cssls", {
-          filetypes = { "css", "scss", "less" },
-          init_options = { provideFormatter = true },
-          single_file_support = true,
-          settings = {
-            css = {
-              lint = {
-                unknownAtRules = "ignore",
-              },
-              validate = true
+            cmd = { vim.fn.exepath("vscode-css-language-server"), "--stdio" },
+
+            filetypes = { "css", "scss", "less" },
+
+            init_options = { provideFormatter = true },
+
+            single_file_support = true,
+
+            settings = {
+                css = {
+                    lint = {
+                        unknownAtRules = "ignore",
+                    },
+                    validate = true
+                },
+
+                scss = {
+                    lint = {
+                        unknownAtRules = "ignore"
+                    },
+                    validate = true
+                },
+
+                less = {
+                    lint = {
+                        unknownAtRules = "ignore"
+                    },
+                    validate = true
+                },
             },
-            scss = {
-              lint = {
-                unknownAtRules = "ignore"
-              },
-              validate = true
-            },
-            less = {
-              lint = {
-                unknownAtRules = "ignore"
-              },
-              validate = true
-            },
-          },
         })
 
         -- tailwind
         vim.lsp.config("tailwindcss", {
+            cmd = { vim.fn.exepath("tailwindcss-language-server") },
+
             filetypes = {
                 "html",
                 "css",
@@ -251,6 +280,7 @@ return {
                 "vue",
                 "astro",
             },
+
             init_options = {
                 userLanguages = {
                     astro = "html",
@@ -260,24 +290,26 @@ return {
 
         -- astro
         vim.lsp.config("astro", {
-            filetypes = { "astro" },
+            cmd = { vim.fn.exepath("astro-ls") },
 
-            init_options = {
-                typescript = {
-                    tsdk = vim.fn.stdpath("data") .. "/mason/packages/typescript-language-server/node_modules/typescript/lib"
-                }
-            },
+            filetypes = { "astro" },
         })
 
         -- python (pyright)
         vim.lsp.config("pyright", {
+            cmd = {
+                vim.fn.exepath("pyright-langserver"),
+                "--stdio",
+            },
+
             filetypes = {
                 "python",
             },
+
             settings = {
                 python = {
                     analysis = {
-                        typeCheckingMode = "basic", -- "off", "basic", "strict"
+                        typeCheckingMode = "basic",
                         autoSearchPaths = true,
                         useLibraryCodeForTypes = true,
                     },
@@ -285,28 +317,19 @@ return {
             },
         })
 
-        -- qml (qmlls)
+        -- qml (mlls)
         vim.lsp.config("qmlls", {
-            filetypes = { "qml", "qmljs" },
-
             cmd = {
-                "qmlls",
-                "-I", "/usr/lib/qt6/qml",
-            }, -- make sure qmlls is in your PATH
+                vim.fn.exepath("qmlls"),
+            },
+
+            filetypes = { "qml", "qmljs" },
 
             root_markers = {
                 ".git",
                 "qmldir",
                 "CMakeLists.txt",
                 "shell.qml",
-            },
-
-            settings = {
-                Qml = {
-                    completion = {
-                        autoImport = true,
-                    },
-                },
             },
         })
 
