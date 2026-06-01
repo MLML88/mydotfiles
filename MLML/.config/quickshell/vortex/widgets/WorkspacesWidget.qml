@@ -73,7 +73,7 @@ Item {
                             if (ws.workspace)
                                 ws.workspace.activate()
                             else
-                                Hyprland.dispatch("workspace " + ws.modelData)
+                                Hyprland.dispatch(`hl.dsp.focus({ workspace = ${ws.modelData} })`)
                         }
                     }
                 }
