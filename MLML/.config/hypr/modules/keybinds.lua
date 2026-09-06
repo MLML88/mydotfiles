@@ -7,6 +7,7 @@ local terminal     = "kitty"
 local fileManager  = "nautilus"
 local menu         = "~/.config/rofi/launchers/type-2/launcher.sh || pkill rofi"
 local notification = "swaync-client -t"
+local browser      = "zen"
 
 ---------------------
 ---- KEYBINDINGS ----
@@ -27,7 +28,7 @@ hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 
 -- User Added
-hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("zen-browser"))
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("pkill qs || qs -c vortex > ~/.cache/quickshell/quickshell.log 2>&1 &"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("qs -c vortex ipc call nightmenu toggle"))
 
