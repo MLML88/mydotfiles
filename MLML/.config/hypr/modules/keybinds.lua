@@ -20,10 +20,11 @@ local closeWindowBind = hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 -- closeWindowBind:set_enabled(false)
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("killall wlogout || wlogout"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized", active = "toggle" }))
+hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", active = "toggle" }))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
-hl.bind(mainMod .. " + SHIFT + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 
 -- User Added
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("zen-browser"))
@@ -44,6 +45,12 @@ hl.bind(mainMod .. " + h",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + l", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + k",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + j",  hl.dsp.focus({ direction = "down" }))
+
+-- Move/swap window focus
+hl.bind(mainMod .. " + SHIFT + h",  hl.dsp.window.swap({ direction = 'l', silent = true }))
+hl.bind(mainMod .. " + SHIFT + l",  hl.dsp.window.swap({ direction = 'r', silent = true }))
+hl.bind(mainMod .. " + SHIFT + k",  hl.dsp.window.swap({ direction = 'u', silent = true }))
+hl.bind(mainMod .. " + SHIFT + j",  hl.dsp.window.swap({ direction = 'd', silent = true }))
 
 -- Switch workspaces with mainMod + [0-9]
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]

@@ -1,3 +1,9 @@
+hl.config({
+    general = {
+        layout = "scrolling";
+    }
+})
+
 -- See https://wiki.hypr.land/Configuring/Layouts/Dwindle-Layout/ for more
 hl.config({
     dwindle = {
