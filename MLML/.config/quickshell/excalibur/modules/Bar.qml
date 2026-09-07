@@ -29,10 +29,11 @@ PanelWindow {
 
     // `focusable: true` alone only requests "on-demand" focus, which the
     // compositor grants on click rather than automatically — that's why
-    // typing didn't work without clicking first. A launcher needs to grab
-    // keyboard input the instant it appears, same as rofi/wofi/fuzzel, which
-    // means Exclusive focus specifically while it's open.
-    WlrLayershell.keyboardFocus: (LauncherState.open && isFocusedScreen) ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
+    // typing didn't work without clicking first. The launcher (always) and
+    // the control center (for the Wi-Fi password field) need to grab
+    // keyboard input the instant they appear, same as rofi/wofi/fuzzel,
+    // which means Exclusive focus specifically while they're open.
+    WlrLayershell.keyboardFocus: ((LauncherState.open && isFocusedScreen) || pill.controlCenterOpen) ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
     // Fixed at the pill's *expanded* size always — we never resize the
     // actual surface (that's what caused the resize ghosting). Only the

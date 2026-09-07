@@ -29,9 +29,11 @@ hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 
 -- User Added
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(browser))
-hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("pkill qs || qs -c vortex > ~/.cache/quickshell/quickshell.log 2>&1 &"))
+hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("pkill quickshell; sleep 0.2; qs -c vortex > ~/.cache/quickshell/quickshell.log 2>&1 &"))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("qs -c vortex ipc call nightmenu toggle"))
 hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("qs -c excalibur ipc call launcher toggle"))
+hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("qs -c excalibur ipc call dashboard toggle"))
+hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("qs -c excalibur ipc call controlcenter toggle"))
 
 -- Notifications
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notification))

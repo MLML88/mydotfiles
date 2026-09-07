@@ -14,4 +14,5 @@ QtObject {
     readonly property color subtext0: "#a6adc8"   // secondary text (nav arrows)
     readonly property color text: "#cdd6f4"       // primary text
     readonly property color blue: "#89b4fa"       // accent (today, active states)
+    readonly property color red: "#f38ba8"        // errors (failed wifi connect, etc.)
 }
