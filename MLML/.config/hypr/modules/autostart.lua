@@ -7,10 +7,10 @@
 -- Autostart necessary processes (like notifications daemons, status bars, etc.)
 -- Or execute your favorite apps at launch like this:
 
-hl.on("hyprland.start", function () 
+hl.on("hyprland.start", function ()
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("blueman-applet")
-    -- hl.exec_cmd("waybar")
+
     hl.exec_cmd("qs -c vortex > ~/.cache/quickshell/quickshell.log 2>&1 &")
     hl.exec_cmd("hyprsunset -t 4500")
 
