@@ -7,7 +7,7 @@ local terminal     = "kitty"
 local fileManager  = "nautilus"
 local menu         = "~/.config/rofi/launchers/type-2/launcher.sh || pkill rofi"
 local notification = "swaync-client -t"
-local browser      = "zen"
+local browser      = "zen || zen-browser"
 
 ---------------------
 ---- KEYBINDINGS ----
@@ -17,23 +17,31 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
-local closeWindowBind = hl.bind(mainMod .. " + Q", hl.dsp.window.close())
--- closeWindowBind:set_enabled(false)
-hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("killall wlogout || wlogout"))
-hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized", active = "toggle" }))
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", active = "toggle" }))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
+hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("killall wlogout || wlogout"))
 
--- User Added
+-- Applications
+hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(browser))
-hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("pkill quickshell; sleep 0.2; qs -c vortex > ~/.cache/quickshell/quickshell.log 2>&1 &"))
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("qs -c vortex ipc call nightmenu toggle"))
-hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd("qs -c excalibur ipc call launcher toggle"))
-hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("qs -c excalibur ipc call dashboard toggle"))
-hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("qs -c excalibur ipc call controlcenter toggle"))
+
+-- Quickshell
+local shell = "vortex"
+local example = "example"
+hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(string.format("pkill quickshell || pkill qs; sleep 0.2; qs -c %s", shell)))
+hl.bind(mainMod .. " + O", hl.dsp.exec_cmd(string.format("pkill quickshell || pkill qs; sleep 0.2; qs -c %s", example)))
+
+-- Vortex
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(string.format("qs -c %s ipc call nightmenu toggle", shell)))
+
+-- Excalibur
+hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(string.format("qs -c %s ipc call launcher toggle", example)))
+hl.bind(mainMod .. " + G", hl.dsp.exec_cmd(string.format("qs -c %s ipc call dashboard toggle", example)))
+hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(string.format("qs -c %s ipc call controlcenter toggle", example)))
 
 -- Notifications
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notification))
