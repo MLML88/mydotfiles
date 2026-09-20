@@ -18,11 +18,13 @@ Item {
     Behavior on notchBodyHeight { NumberAnimation { duration: Metrics.morphDuration; easing.type: Easing.OutBack; easing.overshoot: Metrics.morphOvershoot } }
 
     readonly property real topGap: Config.floating ? Metrics.topGapFloating : 0
-    // One shared radius for all four corners: fully round at idle size, capped (and large)
-    // once expanded.
+    // Top corners drive the flare and use a large, capped radius. Bottom corners use their
+    // own smaller cap so the expanded view isn't overly round at the bottom just because
+    // the top flare is generous. Both are fully round at idle size regardless.
     readonly property real cornerRadius: Metrics.cornerRadiusFor(notchWidth, notchBodyHeight)
-    // radius is intentionally not animated on its own: it must track width/height's live
-    // value every frame of the resize, or it drifts out of sync with the shape.
+    readonly property real bottomRadius: Metrics.bottomCornerRadiusFor(notchWidth, notchBodyHeight)
+    // radii are intentionally not animated on their own: they must track width/height's live
+    // value every frame of the resize, or they drift out of sync with the shape.
 
     // FLUSH mode's top corners are concave: the shape is at its FULL flare width right at
     // y=0 (flush with the screen edge) and narrows inward to the notch's own stable width
@@ -36,6 +38,9 @@ Item {
     readonly property real r: cornerRadius
     readonly property real rk: cornerRadius * kappa
     readonly property real r1k: cornerRadius * (1 - kappa)
+    readonly property real br: bottomRadius
+    readonly property real brk: bottomRadius * kappa
+    readonly property real br1k: bottomRadius * (1 - kappa)
 
     // Where the flat top segment starts/ends, and where the top corner curves hand off to
     // the straight vertical sides — these differ structurally between the two modes (see
@@ -87,17 +92,17 @@ Item {
                 control2X: root.trC2X; control2Y: root.trC2Y
                 x: root.trEndX; y: root.r
             }
-            PathLine { x: root.sideRightX; y: root.notchBodyHeight - root.r }
+            PathLine { x: root.sideRightX; y: root.notchBodyHeight - root.br }
             PathCubic {
-                control1X: root.sideRightX; control1Y: root.notchBodyHeight - root.r1k
-                control2X: root.sideRightX - root.r1k; control2Y: root.notchBodyHeight
-                x: root.sideRightX - root.r; y: root.notchBodyHeight
+                control1X: root.sideRightX; control1Y: root.notchBodyHeight - root.br1k
+                control2X: root.sideRightX - root.br1k; control2Y: root.notchBodyHeight
+                x: root.sideRightX - root.br; y: root.notchBodyHeight
             }
-            PathLine { x: root.sideLeftX + root.r; y: root.notchBodyHeight }
+            PathLine { x: root.sideLeftX + root.br; y: root.notchBodyHeight }
             PathCubic {
-                control1X: root.sideLeftX + root.r1k; control1Y: root.notchBodyHeight
-                control2X: root.sideLeftX; control2Y: root.notchBodyHeight - root.r1k
-                x: root.sideLeftX; y: root.notchBodyHeight - root.r
+                control1X: root.sideLeftX + root.br1k; control1Y: root.notchBodyHeight
+                control2X: root.sideLeftX; control2Y: root.notchBodyHeight - root.br1k
+                x: root.sideLeftX; y: root.notchBodyHeight - root.br
             }
             PathLine { x: root.sideLeftX; y: root.r }
             PathCubic {

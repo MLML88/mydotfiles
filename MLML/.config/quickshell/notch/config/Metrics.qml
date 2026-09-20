@@ -9,18 +9,25 @@ QtObject {
     readonly property int space4: 16
     readonly property int space5: 24
 
-    // Pill geometry. One radius is shared by all four corners: fully round at idle size,
-    // capped at maxCornerRadius (deliberately generous — a big, slow, obvious curve, not a
-    // normal small corner radius) once expanded so it doesn't become a giant semicircle.
+    // Pill geometry. The top corners' radius is deliberately generous — a big, slow,
+    // obvious curve, not a normal small corner radius — since it drives the flare. The
+    // bottom corners use their own, smaller cap so the expanded view doesn't look overly
+    // round at the bottom just because the top flare is large; both are fully round at
+    // idle size, where width/height are small enough that the caps don't bind anyway.
     readonly property int idleHeight: 32
     readonly property int pillPaddingH: 16
     readonly property int pillPaddingV: 6
     readonly property int maxCornerRadius: 48
+    readonly property int maxBottomCornerRadius: 20
     readonly property int topGapFloating: 8
     readonly property int topMargin: Config.floating ? topGapFloating : 0
 
     function cornerRadiusFor(width, height) {
         return Math.min(width / 2, height / 2, maxCornerRadius);
+    }
+
+    function bottomCornerRadiusFor(width, height) {
+        return Math.min(width / 2, height / 2, maxBottomCornerRadius);
     }
 
     // The window reserves this much space at the top of the screen (regardless of the
