@@ -1,6 +1,6 @@
 # Notch — M0 Recon and Plan
 
-Status: M0 complete. No QML written yet.
+Status: M0 complete. M1 built and since revised twice based on visual/interaction review; see the addendum at the bottom of this file for what changed from the plan below.
 
 ## 1. Detected environment
 
@@ -132,3 +132,11 @@ Flagged now, **not acted on** in M0:
 
 - Exact `MprisPlayer` property/method names — read from `~/src/quickshell` source before M2 media work.
 - Exact `PwNode`/`PwNodeAudio` full property list beyond `volume`/`volumes`/`muted` (e.g. anything needed for per-device UI beyond basic volume/mute) — read from source before M2 control-center work.
+
+## Addendum: changes made after visual/interaction review of M1
+
+Based on feedback after seeing M1 running, three things changed from the original plan above:
+
+1. **Window anchoring and space reservation.** The original full-screen (`anchors: top+left+right+bottom`) click-catcher design is gone. The window is now anchored `top+left+right` only, with a fixed `implicitHeight` (`Metrics.windowHeight`, generous enough for any expanded view) and a real `exclusiveZone` (`Metrics.reservedHeight`, sized to the idle pill) via `ExclusionMode.Normal`. This makes Hyprland push other windows down below the notch instead of letting it render on top of them — the original design deliberately avoided reserving space, but that meant the notch could sit on top of window content (e.g. a terminal with no top gap of its own).
+2. **Interaction model.** Hover no longer expands the pill; only a click does. Moving the mouse off the pill collapses it (`MouseArea.onExited`). The old "click outside the whole screen, or Esc, collapses" model is gone along with the full-screen catcher it depended on; Esc is kept as a keyboard fallback while expanded (the pill itself takes focus via `WlrKeyboardFocus.OnDemand` while non-idle).
+3. **Pill shape.** The pill is no longer a plain `Rectangle`. It's a `QtQuick.Shapes` `Shape`/`ShapePath` with an explicit 8-segment outline (4 lines, 4 `PathArc`s): the two bottom corners are always convex (normal rounded corners), and the two top corners are convex in FLOATING mode but **concave** in FLUSH mode — a quarter-circle arc centered exactly at the outer bounding-box corner, which carves a smooth inward curve so the pill reads as flowing out of the screen bezel (matching the reference "Dynamic Island" look) instead of having a flat, square-cut top edge. Corner radius is capped (`Metrics.maxCornerRadius`) so it stays a small detail at large (expanded) sizes instead of growing into a giant semicircle. `QtQuick.Shapes` was confirmed available in this Quickshell 0.3.1 / Nix install by trying it — worth double-checking again if this ever moves to a different Quickshell/Qt build. Getting the concave `PathArc.direction` value right needed empirical iteration (screenshot, flip, re-check) — the theoretical SVG-arc-flag derivation didn't match what actually rendered, so treat any future arc-direction change the same way (verify visually, don't trust the math alone).

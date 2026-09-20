@@ -1,4 +1,3 @@
-import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
@@ -16,13 +15,19 @@ ShellRoot {
             property var modelData
             screen: modelData
 
+            // Only anchored to the top edge: this reserves real screen space (below) for
+            // other windows instead of a full-screen overlay, so the notch never sits on
+            // top of app content. The window itself stays tall enough to fit any expanded
+            // view; exclusiveZone below is a fixed, smaller amount so expanding doesn't
+            // shove other windows around every time the pill grows.
             anchors {
                 top: true
                 left: true
                 right: true
-                bottom: true
             }
-            exclusionMode: ExclusionMode.Ignore
+            implicitHeight: Metrics.windowHeight
+            exclusionMode: ExclusionMode.Normal
+            exclusiveZone: Metrics.reservedHeight
             color: "transparent"
 
             WlrLayershell.namespace: "quickshell:notch"
@@ -30,23 +35,11 @@ ShellRoot {
             focusable: NotchState.current !== NotchState.idle
             WlrLayershell.keyboardFocus: focusable ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
-            // Only the pill itself is clickable while idle so the rest of the
-            // screen passes clicks through; once expanded the whole window
-            // catches clicks so clicking anywhere outside the pill collapses it.
+            // Only the pill itself is clickable; the rest of this window's width/height
+            // (needed to fit expanded content and span the screen for centering) passes
+            // clicks through to whatever's underneath.
             mask: Region {
-                item: NotchState.current === NotchState.idle ? pill : catcher
-            }
-
-            Item {
-                id: catcher
-                anchors.fill: parent
-                focus: window.focusable
-                Keys.onEscapePressed: NotchState.collapse()
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: NotchState.collapse()
-                }
+                item: pill
             }
 
             Pill {
