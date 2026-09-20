@@ -8,6 +8,7 @@ local fileManager  = "nautilus"
 local menu         = "~/.config/rofi/launchers/type-2/launcher.sh || pkill rofi"
 local notification = "swaync-client -t"
 local browser      = "zen || zen-browser"
+local editor       = "codium"
 
 ---------------------
 ---- KEYBINDINGS ----
@@ -28,23 +29,24 @@ hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("killall wlogout || wlogout"))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(browser))
+hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(editor))
 
 -- Quickshell
 local shell = "vortex"
-local example = "example"
+local experiment = "excalibur"
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(string.format("pkill quickshell || pkill qs; sleep 0.2; qs -c %s", shell)))
-hl.bind(mainMod .. " + O", hl.dsp.exec_cmd(string.format("pkill quickshell || pkill qs; sleep 0.2; qs -c %s", example)))
+hl.bind(mainMod .. " + O", hl.dsp.exec_cmd(string.format("pkill quickshell || pkill qs; sleep 0.2; qs -c %s", experiment)))
 
 -- Vortex
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(string.format("qs -c %s ipc call nightmenu toggle", shell)))
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(string.format("qs -c %s ipc call nightmenu toggle", shell)))
 
 -- Excalibur
-hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(string.format("qs -c %s ipc call launcher toggle", example)))
-hl.bind(mainMod .. " + G", hl.dsp.exec_cmd(string.format("qs -c %s ipc call dashboard toggle", example)))
-hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(string.format("qs -c %s ipc call controlcenter toggle", example)))
+hl.bind(mainMod .. " + SPACE", hl.dsp.exec_cmd(string.format("qs -c %s ipc call launcher toggle", experiment)))
+hl.bind(mainMod .. " + G", hl.dsp.exec_cmd(string.format("qs -c %s ipc call dashboard toggle", experiment)))
+hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(string.format("qs -c %s ipc call controlcenter toggle", experiment)))
 
 -- Notifications
-hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notification))
+hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(notification))
 
 -- Clipboard
 hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("cliphist list | rofi -dmenu -display-column 2 -p 'Clipboard' -theme ~/.config/rofi/launchers/type-2/style-5.rasi | cliphist decode | wl-copy"))
