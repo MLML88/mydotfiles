@@ -14,7 +14,7 @@ Status: M0 complete. No QML written yet.
 | GPU | Hybrid: NVIDIA RTX 4070 Max-Q (dGPU) + AMD Raphael (iGPU, likely driving the compositor). No `nvidia-smi`/`radeontop`/`intel_gpu_top` installed — GPU/VRAM stat has no read path yet on either GPU. |
 | Bluetooth | `bluetooth.service` active, `bluetoothctl` present. Native `Quickshell.Bluetooth` module exists in 0.3.1 — use it instead of shelling out. |
 | Battery/power | `upower` present: one battery (`BAT0`) + AC adapter (`ADP0`). This is a laptop — battery tile is a live feature. `PowerProfiles` in `Quickshell.Services.UPower` covers the power-profile tile. |
-| Notification daemon | **`swaync` is currently running** and is very likely what's claiming the 50px top reservation on both monitors. Notch's own `NotificationServer` will need to own the `org.freedesktop.Notifications` DBus name, which conflicts with swaync running at the same time. **Needs explicit sign-off before M2** to stop/disable swaync — not done in M0. |
+| Notification daemon | **`swaync` is currently running.** Notch's own `NotificationServer` will need to own the `org.freedesktop.Notifications` DBus name, which conflicts with swaync running at the same time. **Needs explicit sign-off before M2** to stop/disable swaync — not done in M0. (Corrected in M1: `hyprctl layers` shows the 50px top reservation on both monitors actually belongs to the existing `vortex` Quickshell bar (namespace `quickshell`, a 1890×35 top-strip layer), not swaync — swaync itself reserves no panel space.) |
 | Fonts | JetBrainsMono Nerd Font installed (regular/mono/propo, all weights) — covers icon glyphs and tabular-friendly monospace numerals. Noto Sans Symbols as fallback. |
 | CLI tools (from CLAUDE.md's list) | Installed: `nmcli`, `bluetoothctl`, `wpctl`, `hyprctl`. **Missing**: `playerctl`, `brightnessctl`, `khal`, `matugen`, `wallust`, `grim`. |
 
@@ -125,7 +125,7 @@ Per CLAUDE.md's ground rules, installing packages requires your sign-off — ins
 Flagged now, **not acted on** in M0:
 
 1. **swaync** must be stopped/disabled before Notch's `NotificationServer` can own the DBus notification name — will ask again at the start of M2.
-2. The 50px top reservation on both monitors (likely swaync's own layer surface) needs to be understood before M1 decides Notch's own anchoring/margins — will check what claims it once swaync is addressed.
+2. ~~The 50px top reservation on both monitors needs to be understood before M1 decides Notch's own anchoring/margins~~ — resolved in M1: it's the `vortex` bar's own exclusive zone, unrelated to Notch. Notch's window doesn't reserve any space (`ExclusionMode.Ignore`), so the two coexist without conflict.
 3. Installing `brightnessctl` and `grim` needs explicit approval before M1/M2, per "ask before installing packages."
 
 ## 9. Known unknowns to resolve at implementation time (not blocking, not guesses)

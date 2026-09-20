@@ -69,7 +69,7 @@ docs/                     README.md, progress notes
 Work in this order, and stop for my review at the end of each one. Tick items off here as they're finished.
 
 - [x] **M0: Recon and plan.** Detect the environment (Hyprland and Quickshell versions, monitors and scale, audio and network stack, GPU, existing notification daemon, installed CLI tools, available fonts). Write findings and the final plan to `docs/PLAN.md`.
-- [ ] **M1: Foundation.** `shell.qml`, `Theme`, `Metrics`, the notch window, the morphing pill, the state machine. Clock only. Must run cleanly.
+- [x] **M1: Foundation.** `shell.qml`, `Theme`, `Metrics`, the notch window, the morphing pill, the state machine. Clock only. Must run cleanly.
 - [ ] **M2: Live data.** Media (MPRIS), notifications, control center.
 - [ ] **M3: Tools.** Launcher, calendar, PC stats, theme switcher.
 - [ ] **M4: Polish.** Animation tuning, edge cases, multi-monitor check, `docs/README.md` with Hyprland keybinds and layerrules (including the blur rule for the notch namespace), and a "known limitations" section.
