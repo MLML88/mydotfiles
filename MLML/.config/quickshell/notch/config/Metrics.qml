@@ -9,7 +9,7 @@ QtObject {
     readonly property int space4: 16
     readonly property int space5: 24
 
-    // Pill geometry. Bottom corners are fully round at idle size and cap out at
+    // Pill geometry. Corners are fully round at idle size and cap out at
     // maxCornerRadius for larger expanded views instead of growing into a giant semicircle.
     readonly property int idleHeight: 32
     readonly property int pillPaddingH: 16
@@ -22,20 +22,16 @@ QtObject {
         return Math.min(width / 2, height / 2, maxCornerRadius);
     }
 
-    // The FLUSH-mode top ears use their own, larger radius (bounded by height rather than
-    // height / 2) so the curve reads as most of the top edge, not a small nub in each corner.
-    readonly property int maxEarRadius: 30
-
-    function earRadiusFor(width, height) {
-        return Math.min(width / 2, height, maxEarRadius);
-    }
+    // The strip the notch hangs from, and the concave fillet radius connecting them — kept
+    // equal per the reference design, and constant regardless of how the notch body resizes.
+    readonly property int stripHeight: 10
 
     // The window reserves this much space at the top of the screen (regardless of the
     // pill's current animated size) so other windows never render underneath it, even
     // though the pill itself is free to grow taller than this when expanded.
-    readonly property int reservedHeight: idleHeight
+    readonly property int reservedHeight: stripHeight + idleHeight
     // Generous fixed window height so any expanded view fits without resizing the surface.
-    readonly property int windowHeight: 260
+    readonly property int windowHeight: stripHeight + 260
 
     // Morph animation: a fixed-duration OutBack curve gives the shape change a controllable
     // overshoot, so content reveal can be timed to exactly when the shape settles (a physics
