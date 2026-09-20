@@ -20,10 +20,12 @@ QtObject {
         return height / 2;
     }
 
-    // Morph animation: a light SpringAnimation gives the shape change its overshoot.
-    readonly property real pillSpring: 3.0
-    readonly property real pillDamping: 0.4
-    // Content waits for the shape to settle before fading/scaling in.
-    readonly property int shapeSettleDelay: 180
+    // Morph animation: a fixed-duration OutBack curve gives the shape change a controllable
+    // overshoot, so content reveal can be timed to exactly when the shape settles (a physics
+    // based SpringAnimation has no fixed settle time, which let content reveal before the
+    // shape had actually finished growing).
+    readonly property int morphDuration: 260
+    readonly property real morphOvershoot: 1.4
     readonly property int contentFadeDuration: 140
+    readonly property int contentRevealDelay: morphDuration + 20
 }

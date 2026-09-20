@@ -8,19 +8,28 @@ Rectangle {
 
     color: Theme.pillBackground
     radius: Metrics.radiusFor(height)
+    // Clip so the content can never render past the pill's current bounds while it's
+    // still mid-morph (otherwise a bigger view's text is visible before the shape catches up).
+    clip: true
 
     implicitWidth: contentLoader.item ? contentLoader.item.implicitWidth + Metrics.pillPaddingH * 2 : Metrics.idleHeight * 2
     implicitHeight: contentLoader.item ? contentLoader.item.implicitHeight + Metrics.pillPaddingV * 2 : Metrics.idleHeight
     width: implicitWidth
     height: implicitHeight
 
-    Behavior on width { SpringAnimation { spring: Metrics.pillSpring; damping: Metrics.pillDamping } }
-    Behavior on height { SpringAnimation { spring: Metrics.pillSpring; damping: Metrics.pillDamping } }
-    Behavior on radius { NumberAnimation { duration: 220; easing.type: Easing.OutCubic } }
+    Behavior on width { NumberAnimation { duration: Metrics.morphDuration; easing.type: Easing.OutBack; easing.overshoot: Metrics.morphOvershoot } }
+    Behavior on height { NumberAnimation { duration: Metrics.morphDuration; easing.type: Easing.OutBack; easing.overshoot: Metrics.morphOvershoot } }
+    // radius is intentionally not animated on its own: it must track height's live value on
+    // every frame of the resize, or it drifts out of sync with the shape until height settles.
 
-    // Content stays hidden until the shape settles, then fades/scales in.
-    property bool revealed: true
-    property bool ready: false
+    // Squares off the top corners in FLUSH mode so the pill reads as hanging down from the
+    // screen edge instead of floating as a full stadium shape.
+    Rectangle {
+        visible: !Config.floating
+        color: parent.color
+        anchors { top: parent.top; left: parent.left; right: parent.right }
+        height: parent.radius
+    }
 
     MouseArea {
         anchors.fill: parent
@@ -29,14 +38,15 @@ Rectangle {
         onClicked: NotchState.toggle(NotchState.clock)
     }
 
+    // Content is hidden by a direct property assignment (never a Behavior) so hiding is always
+    // instant; only the reveal, once the shape has settled, is an explicit, animated step. Toggling
+    // a Behavior's `enabled` in the same tick as the property it guards does not reliably suppress
+    // the animation for that change, which is what let content flash mid-resize before this.
     Item {
         id: contentHost
         anchors.centerIn: parent
-        opacity: root.revealed ? 1 : 0
-        scale: root.revealed ? 1 : 0.92
-
-        Behavior on opacity { NumberAnimation { duration: Metrics.contentFadeDuration; easing.type: Easing.OutCubic } }
-        Behavior on scale { NumberAnimation { duration: Metrics.contentFadeDuration; easing.type: Easing.OutCubic } }
+        opacity: 1
+        scale: 1
 
         Loader {
             id: contentLoader
@@ -48,20 +58,25 @@ Rectangle {
     Component { id: idleComponent; ClockIdle {} }
     Component { id: expandedComponent; ClockExpanded {} }
 
+    ParallelAnimation {
+        id: revealAnimation
+        NumberAnimation { target: contentHost; property: "opacity"; to: 1; duration: Metrics.contentFadeDuration; easing.type: Easing.OutCubic }
+        NumberAnimation { target: contentHost; property: "scale"; to: 1; duration: Metrics.contentFadeDuration; easing.type: Easing.OutCubic }
+    }
+
     Timer {
         id: revealTimer
-        interval: Metrics.shapeSettleDelay
-        onTriggered: root.revealed = true
+        interval: Metrics.contentRevealDelay
+        onTriggered: revealAnimation.start()
     }
 
     Connections {
         target: NotchState
         function onCurrentChanged() {
-            if (!root.ready) return;
-            root.revealed = false;
+            revealAnimation.stop();
+            contentHost.opacity = 0;
+            contentHost.scale = 0.92;
             revealTimer.restart();
         }
     }
-
-    Component.onCompleted: root.ready = true
 }
