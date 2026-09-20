@@ -17,62 +17,93 @@ Item {
     Behavior on notchWidth { NumberAnimation { duration: Metrics.morphDuration; easing.type: Easing.OutBack; easing.overshoot: Metrics.morphOvershoot } }
     Behavior on notchBodyHeight { NumberAnimation { duration: Metrics.morphDuration; easing.type: Easing.OutBack; easing.overshoot: Metrics.morphOvershoot } }
 
-    // The strip only makes sense flush against the screen edge. Floating mode falls back to
-    // a plain flat top (fillet radius 0 degenerates the corner arcs below into sharp corners).
-    readonly property bool useStrip: !Config.floating && Config.stripEnabled
-    readonly property real stripHeight: useStrip ? Metrics.stripHeight : 0
-    readonly property real filletRadius: useStrip ? Metrics.stripHeight : 0
-    readonly property real bottomRadius: Metrics.cornerRadiusFor(notchWidth, notchBodyHeight)
     readonly property real topGap: Config.floating ? Metrics.topGapFloating : 0
-    readonly property real notchTop: topGap + stripHeight
-    readonly property real notchLeft: (width - notchWidth) / 2
-    readonly property real notchRight: notchLeft + notchWidth
-    // radii are intentionally not animated on their own: they must track width/height's live
-    // value every frame of the resize, or they drift out of sync with the shape.
+    // One shared radius for all four corners: fully round at idle size, capped (and large)
+    // once expanded.
+    readonly property real cornerRadius: Metrics.cornerRadiusFor(notchWidth, notchBodyHeight)
+    // radius is intentionally not animated on its own: it must track width/height's live
+    // value every frame of the resize, or it drifts out of sync with the shape.
 
-    implicitHeight: notchTop + notchBodyHeight
+    // FLUSH mode's top corners are concave: the shape is at its FULL flare width right at
+    // y=0 (flush with the screen edge) and narrows inward to the notch's own stable width
+    // by y=cornerRadius. That flare extends past the notch's own width, so the shape (and
+    // this item) needs extra width on each side to fit it without clipping. FLOATING mode
+    // needs no extra width — its top corners round inward in the normal (convex) way.
+    readonly property real flareRadius: Config.floating ? 0 : cornerRadius
+    readonly property real shapeWidth: notchWidth + flareRadius * 2
+
+    readonly property real kappa: 0.5522847498
+    readonly property real r: cornerRadius
+    readonly property real rk: cornerRadius * kappa
+    readonly property real r1k: cornerRadius * (1 - kappa)
+
+    // Where the flat top segment starts/ends, and where the top corner curves hand off to
+    // the straight vertical sides — these differ structurally between the two modes (see
+    // above), not just by swapping a direction flag.
+    readonly property real topFlatLeft: Config.floating ? r : 0
+    readonly property real topFlatRight: Config.floating ? shapeWidth - r : shapeWidth
+    readonly property real sideLeftX: flareRadius
+    readonly property real sideRightX: shapeWidth - flareRadius
+
+    // Top-right curve: FLOATING goes from (shapeWidth-r,0) to (shapeWidth,r) bulging out to
+    // the full width (standard convex, center inside at (shapeWidth-r,r)). FLUSH goes from
+    // (shapeWidth,0) to (shapeWidth-r,r), starting at the full flare width and narrowing
+    // in (concave, center at (shapeWidth,r)) — verified against the rendered, pixel-measured
+    // result, not just derived on paper; the naive "center at the outer corner" derivation
+    // that seemed obvious turned out backwards in practice.
+    readonly property real trEndX: sideRightX
+    readonly property real trC1X: Config.floating ? shapeWidth - r1k : shapeWidth - rk
+    readonly property real trC2X: trEndX
+    readonly property real trC2Y: r1k
+    // Top-left mirrors top-right: control1 sits near the curve's start (sideLeftX, r) with
+    // the same formula in both modes; control2 sits near its end (topFlatLeft, 0) and is
+    // where the two modes actually differ.
+    readonly property real tlC1X: sideLeftX
+    readonly property real tlC1Y: r1k
+    readonly property real tlC2X: Config.floating ? r1k : rk
+    readonly property real tlC2Y: r1k
+
+    implicitWidth: shapeWidth
+    implicitHeight: topGap + notchBodyHeight
+    width: implicitWidth
     height: implicitHeight
-
-    Rectangle {
-        visible: root.useStrip
-        color: Theme.stripBackground
-        anchors { top: parent.top; left: parent.left; right: parent.right }
-        height: root.stripHeight
-    }
+    clip: true
 
     Shape {
-        anchors.fill: parent
+        y: root.topGap
+        width: root.shapeWidth
+        height: root.notchBodyHeight
         preferredRendererType: Shape.CurveRenderer
 
         ShapePath {
             fillColor: Theme.pillBackground
             strokeWidth: -1
 
-            startX: root.notchLeft - root.filletRadius
-            startY: root.notchTop
-            PathLine { x: root.notchRight + root.filletRadius; y: root.notchTop }
-            PathArc {
-                x: root.notchRight; y: root.notchTop + root.filletRadius
-                radiusX: root.filletRadius; radiusY: root.filletRadius
-                direction: PathArc.Clockwise
+            startX: root.topFlatLeft
+            startY: 0
+            PathLine { x: root.topFlatRight; y: 0 }
+            PathCubic {
+                control1X: root.trC1X; control1Y: 0
+                control2X: root.trC2X; control2Y: root.trC2Y
+                x: root.trEndX; y: root.r
             }
-            PathLine { x: root.notchRight; y: root.height - root.bottomRadius }
-            PathArc {
-                x: root.notchRight - root.bottomRadius; y: root.height
-                radiusX: root.bottomRadius; radiusY: root.bottomRadius
-                direction: PathArc.Clockwise
+            PathLine { x: root.sideRightX; y: root.notchBodyHeight - root.r }
+            PathCubic {
+                control1X: root.sideRightX; control1Y: root.notchBodyHeight - root.r1k
+                control2X: root.sideRightX - root.r1k; control2Y: root.notchBodyHeight
+                x: root.sideRightX - root.r; y: root.notchBodyHeight
             }
-            PathLine { x: root.notchLeft + root.bottomRadius; y: root.height }
-            PathArc {
-                x: root.notchLeft; y: root.height - root.bottomRadius
-                radiusX: root.bottomRadius; radiusY: root.bottomRadius
-                direction: PathArc.Clockwise
+            PathLine { x: root.sideLeftX + root.r; y: root.notchBodyHeight }
+            PathCubic {
+                control1X: root.sideLeftX + root.r1k; control1Y: root.notchBodyHeight
+                control2X: root.sideLeftX; control2Y: root.notchBodyHeight - root.r1k
+                x: root.sideLeftX; y: root.notchBodyHeight - root.r
             }
-            PathLine { x: root.notchLeft; y: root.notchTop + root.filletRadius }
-            PathArc {
-                x: root.notchLeft - root.filletRadius; y: root.notchTop
-                radiusX: root.filletRadius; radiusY: root.filletRadius
-                direction: PathArc.Clockwise
+            PathLine { x: root.sideLeftX; y: root.r }
+            PathCubic {
+                control1X: root.tlC1X; control1Y: root.tlC1Y
+                control2X: root.tlC2X; control2Y: 0
+                x: root.topFlatLeft; y: 0
             }
         }
     }
@@ -89,12 +120,13 @@ Item {
         onExited: if (root.notchState.current !== root.notchState.idle) root.notchState.collapse()
     }
 
-    // Content is positioned within the notch's own (animated) bounds, not the full strip
-    // width. Clipped so it can never render past the notch's current bounds mid-morph.
+    // Content is positioned within the notch's own stable body (excluding the flare
+    // margins), not the wider shape bounds. Clipped so it can never render past the
+    // notch's current bounds mid-morph.
     Item {
         id: notchBounds
-        x: root.notchLeft
-        y: root.notchTop
+        x: root.flareRadius
+        y: root.topGap
         width: root.notchWidth
         height: root.notchBodyHeight
         clip: true

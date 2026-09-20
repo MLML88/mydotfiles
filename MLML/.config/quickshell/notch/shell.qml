@@ -39,27 +39,19 @@ ShellRoot {
             focusable: notchState.current !== notchState.idle
             WlrLayershell.keyboardFocus: focusable ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
-            // Only the strip + notch's own visible area is clickable; the transparent space
-            // beside the notch (within this window's full width/height) passes clicks
-            // through to whatever's underneath. Pill's own bounding box can't be used
-            // directly since it also spans that transparent space.
+            // Only the pill itself is clickable; the rest of this window's width/height
+            // (needed to fit expanded content and span the screen for centering) passes
+            // clicks through to whatever's underneath.
             mask: Region {
-                x: 0; y: 0
-                width: pill.width; height: pill.stripHeight
-                Region {
-                    x: pill.notchLeft; y: pill.notchTop
-                    width: pill.notchWidth; height: pill.notchBodyHeight
-                    radius: pill.bottomRadius
-                    intersection: Intersection.Combine
-                }
+                item: pill
             }
 
             Pill {
                 id: pill
                 notchState: window.notchState
                 anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
+                anchors.topMargin: Metrics.topMargin
+                anchors.horizontalCenter: parent.horizontalCenter
             }
         }
     }

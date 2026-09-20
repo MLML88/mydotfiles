@@ -5,8 +5,6 @@ QtObject {
     // Pure black, opaque pill (see docs/PLAN.md's design reference section) — no
     // translucency/blur on the fill itself.
     readonly property color pillBackground: "#000000"
-    // The slim full-width strip the notch hangs down from, visibly lighter than the notch.
-    readonly property color stripBackground: "#171717"
     readonly property color textPrimary: "#FFFFFF"
     readonly property color textSecondary: "#9A9A9A"
     readonly property color accent: "#0A84FF"

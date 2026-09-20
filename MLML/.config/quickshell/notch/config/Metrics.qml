@@ -9,12 +9,13 @@ QtObject {
     readonly property int space4: 16
     readonly property int space5: 24
 
-    // Pill geometry. Corners are fully round at idle size and cap out at
-    // maxCornerRadius for larger expanded views instead of growing into a giant semicircle.
+    // Pill geometry. One radius is shared by all four corners: fully round at idle size,
+    // capped at maxCornerRadius (deliberately generous — a big, slow, obvious curve, not a
+    // normal small corner radius) once expanded so it doesn't become a giant semicircle.
     readonly property int idleHeight: 32
     readonly property int pillPaddingH: 16
     readonly property int pillPaddingV: 6
-    readonly property int maxCornerRadius: 24
+    readonly property int maxCornerRadius: 48
     readonly property int topGapFloating: 8
     readonly property int topMargin: Config.floating ? topGapFloating : 0
 
@@ -22,16 +23,12 @@ QtObject {
         return Math.min(width / 2, height / 2, maxCornerRadius);
     }
 
-    // The strip the notch hangs from, and the concave fillet radius connecting them — kept
-    // equal per the reference design, and constant regardless of how the notch body resizes.
-    readonly property int stripHeight: 10
-
     // The window reserves this much space at the top of the screen (regardless of the
     // pill's current animated size) so other windows never render underneath it, even
     // though the pill itself is free to grow taller than this when expanded.
-    readonly property int reservedHeight: stripHeight + idleHeight
+    readonly property int reservedHeight: idleHeight
     // Generous fixed window height so any expanded view fits without resizing the surface.
-    readonly property int windowHeight: stripHeight + 260
+    readonly property int windowHeight: 260
 
     // Morph animation: a fixed-duration OutBack curve gives the shape change a controllable
     // overshoot, so content reveal can be timed to exactly when the shape settles (a physics
