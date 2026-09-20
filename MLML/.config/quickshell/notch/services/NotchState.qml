@@ -1,6 +1,7 @@
-pragma Singleton
 import QtQuick
 
+// Not a singleton: each monitor's window owns its own instance so expanding the notch
+// on one screen never affects another screen's notch.
 QtObject {
     readonly property string idle: "idle"
     readonly property string clock: "clock"

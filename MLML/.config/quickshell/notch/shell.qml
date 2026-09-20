@@ -8,12 +8,16 @@ import "./components"
 
 ShellRoot {
     Variants {
+        id: notchWindows
         model: Quickshell.screens
 
         PanelWindow {
             id: window
             property var modelData
             screen: modelData
+            // Each monitor owns its own state, so expanding on one screen's notch never
+            // expands another screen's.
+            property NotchState notchState: NotchState {}
 
             // Only anchored to the top edge: this reserves real screen space (below) for
             // other windows instead of a full-screen overlay, so the notch never sits on
@@ -32,7 +36,7 @@ ShellRoot {
 
             WlrLayershell.namespace: "quickshell:notch"
             WlrLayershell.layer: WlrLayer.Overlay
-            focusable: NotchState.current !== NotchState.idle
+            focusable: notchState.current !== notchState.idle
             WlrLayershell.keyboardFocus: focusable ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
             // Only the pill itself is clickable; the rest of this window's width/height
@@ -44,6 +48,7 @@ ShellRoot {
 
             Pill {
                 id: pill
+                notchState: window.notchState
                 anchors.top: parent.top
                 anchors.topMargin: Metrics.topMargin
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -51,17 +56,27 @@ ShellRoot {
         }
     }
 
+    // IPC and the global shortcut aren't tied to a specific monitor, so they act on every
+    // screen's notch at once.
     IpcHandler {
         target: "notch"
 
-        function toggle(state: string): void { NotchState.toggle(state); }
-        function expand(state: string): void { NotchState.expand(state); }
-        function collapse(): void { NotchState.collapse(); }
+        function toggle(state: string): void {
+            for (const win of notchWindows.instances) win.notchState.toggle(state);
+        }
+        function expand(state: string): void {
+            for (const win of notchWindows.instances) win.notchState.expand(state);
+        }
+        function collapse(): void {
+            for (const win of notchWindows.instances) win.notchState.collapse();
+        }
     }
 
     GlobalShortcut {
         name: "toggle-clock"
         description: "Expand or collapse the Notch clock view"
-        onPressed: NotchState.toggle(NotchState.clock)
+        onPressed: {
+            for (const win of notchWindows.instances) win.notchState.toggle(win.notchState.clock);
+        }
     }
 }

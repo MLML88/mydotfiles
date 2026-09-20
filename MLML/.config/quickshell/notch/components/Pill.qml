@@ -7,9 +7,14 @@ import "../modules/clock"
 Item {
     id: root
 
+    required property NotchState notchState
+
     // In FLUSH mode the top corners curve inward (concave), like a real notch flowing out
-    // of the screen bezel; in FLOATING mode all four corners round outward normally.
-    readonly property real cornerRadius: Metrics.cornerRadiusFor(width, height)
+    // of the screen bezel, using a larger radius than the bottom so the curve reads as most
+    // of the top edge instead of a small nub in each corner. In FLOATING mode all four
+    // corners round outward normally with the same (smaller) radius.
+    readonly property real bottomRadius: Metrics.cornerRadiusFor(width, height)
+    readonly property real topRadius: Config.floating ? bottomRadius : Metrics.earRadiusFor(width, height)
     readonly property int topDirection: Config.floating ? PathArc.Counterclockwise : PathArc.Clockwise
 
     clip: true
@@ -21,8 +26,8 @@ Item {
 
     Behavior on width { NumberAnimation { duration: Metrics.morphDuration; easing.type: Easing.OutBack; easing.overshoot: Metrics.morphOvershoot } }
     Behavior on height { NumberAnimation { duration: Metrics.morphDuration; easing.type: Easing.OutBack; easing.overshoot: Metrics.morphOvershoot } }
-    // cornerRadius is intentionally not animated on its own: it must track width/height's
-    // live value every frame of the resize, or it drifts out of sync with the shape.
+    // The radii are intentionally not animated on their own: they must track width/height's
+    // live value every frame of the resize, or they drift out of sync with the shape.
 
     Shape {
         anchors.fill: parent
@@ -32,30 +37,30 @@ Item {
             fillColor: Theme.pillBackground
             strokeWidth: -1
 
-            startX: root.cornerRadius
+            startX: root.topRadius
             startY: 0
-            PathLine { x: root.width - root.cornerRadius; y: 0 }
+            PathLine { x: root.width - root.topRadius; y: 0 }
             PathArc {
-                x: root.width; y: root.cornerRadius
-                radiusX: root.cornerRadius; radiusY: root.cornerRadius
+                x: root.width; y: root.topRadius
+                radiusX: root.topRadius; radiusY: root.topRadius
                 direction: root.topDirection
             }
-            PathLine { x: root.width; y: root.height - root.cornerRadius }
+            PathLine { x: root.width; y: root.height - root.bottomRadius }
             PathArc {
-                x: root.width - root.cornerRadius; y: root.height
-                radiusX: root.cornerRadius; radiusY: root.cornerRadius
+                x: root.width - root.bottomRadius; y: root.height
+                radiusX: root.bottomRadius; radiusY: root.bottomRadius
                 direction: PathArc.Clockwise
             }
-            PathLine { x: root.cornerRadius; y: root.height }
+            PathLine { x: root.bottomRadius; y: root.height }
             PathArc {
-                x: 0; y: root.height - root.cornerRadius
-                radiusX: root.cornerRadius; radiusY: root.cornerRadius
+                x: 0; y: root.height - root.bottomRadius
+                radiusX: root.bottomRadius; radiusY: root.bottomRadius
                 direction: PathArc.Clockwise
             }
-            PathLine { x: 0; y: root.cornerRadius }
+            PathLine { x: 0; y: root.topRadius }
             PathArc {
-                x: root.cornerRadius; y: 0
-                radiusX: root.cornerRadius; radiusY: root.cornerRadius
+                x: root.topRadius; y: 0
+                radiusX: root.topRadius; radiusY: root.topRadius
                 direction: root.topDirection
             }
         }
@@ -63,14 +68,14 @@ Item {
 
     // Click to expand; moving the mouse off the pill collapses it again. Esc is kept as a
     // keyboard fallback while expanded.
-    focus: NotchState.current !== NotchState.idle
-    Keys.onEscapePressed: NotchState.collapse()
+    focus: notchState.current !== notchState.idle
+    Keys.onEscapePressed: notchState.collapse()
 
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        onClicked: NotchState.toggle(NotchState.clock)
-        onExited: if (NotchState.current !== NotchState.idle) NotchState.collapse()
+        onClicked: root.notchState.toggle(root.notchState.clock)
+        onExited: if (root.notchState.current !== root.notchState.idle) root.notchState.collapse()
     }
 
     // Content is hidden by a direct property assignment (never a Behavior) so hiding is always
@@ -86,7 +91,7 @@ Item {
         Loader {
             id: contentLoader
             anchors.centerIn: parent
-            sourceComponent: NotchState.current === NotchState.idle ? idleComponent : expandedComponent
+            sourceComponent: root.notchState.current === root.notchState.idle ? idleComponent : expandedComponent
         }
     }
 
@@ -106,7 +111,7 @@ Item {
     }
 
     Connections {
-        target: NotchState
+        target: root.notchState
         function onCurrentChanged() {
             revealAnimation.stop();
             contentHost.opacity = 0;
