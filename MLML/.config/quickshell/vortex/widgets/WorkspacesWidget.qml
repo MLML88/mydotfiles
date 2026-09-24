@@ -11,12 +11,19 @@ Item {
     implicitWidth: workspacesRow.implicitWidth + 25
     implicitHeight: 32
 
+
     required property string monitorName
+    property int monitorCount: Hyprland.monitors.count
+
     property var workspaceSet:
-        monitorName === "HDMI-A-1" ? [1, 2, 3, 4, 5]
-        : monitorName === "eDP-1" ? [6, 7, 8, 9, 10]
-        : monitorName === "eDP-2" ? [6, 7, 8, 9, 10]
-        : [1, 2, 3, 4, 5]
+        if (monitorCount > 1) {
+            monitorName === "HDMI-A-1" ? [1, 2, 3, 4, 5]
+            : monitorName === "eDP-1" ? [6, 7, 8, 9, 10]
+            : monitorName === "eDP-2" ? [6, 7, 8, 9, 10]
+            : [1, 2, 3, 4, 5]
+        } else {
+            [1,2,3,4,5]
+        }
 
     Pill {
         anchors.fill: root

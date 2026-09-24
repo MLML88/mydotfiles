@@ -5,8 +5,16 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Window-Rules/
 -- and https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 
-for i = 1, 10 do
-    hl.workspace_rule({ workspace = i, monitor = i < 6 and "HDMI-A-1" or "eDP-1", default = (i == 1 or i == 6) and true or false })
+local hdmi_monitors = hl.get_monitor("HDMI-A-1")
+
+if hdmi_monitors then
+    for i = 1, 10 do
+        hl.workspace_rule({ workspace = i, monitor = i < 6 and "HDMI-A-1" or "eDP-1", default = (i == 1 or i == 6) and true or false })
+    end
+else
+    for i = 1, 5 do
+        hl.workspace_rule({ workspace = i, monitor = "eDP-1", default = (i == 1)})
+    end
 end
 
 local suppressMaximizeRule = hl.window_rule({
