@@ -24,3 +24,5 @@ abbr -a so source ./venv/bin/activate.fish
 
 zoxide init --cmd cd fish | source
 
+set -Ux PYENV_ROOT $HOME/.pyenv
+fish_add_path $PYENV_ROOT/bin

@@ -209,4 +209,8 @@ return {
         }
     )),
 
+    s("date", f(function()
+        return os.date("%B %d, %Y")
+    end)),
+
 }
