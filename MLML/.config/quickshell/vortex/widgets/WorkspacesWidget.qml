@@ -13,7 +13,11 @@ Item {
 
 
     required property string monitorName
-    property int monitorCount: Hyprland.monitors.count
+    property int monitorCount: Hyprland.monitors.values.length
+
+    Component.onCompleted: {
+        console.log("Total monitors connected: " + monitorCount)
+    }
 
     property var workspaceSet:
         if (monitorCount > 1) {
