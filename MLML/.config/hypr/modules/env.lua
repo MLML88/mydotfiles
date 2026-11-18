@@ -33,3 +33,6 @@ hl.env("GBM_BACKEND", "nvidia-drm")
 hl.env("LIBVA_DRIVER_NAME", "nvidia")
 hl.env("WLR_NO_HARDWARE_CURSORS", "1")
 
+-- Amane
+hl.env("PATH", os.getenv("HOME") .. "/.cargo/bin:" .. os.getenv("PATH"))
+
