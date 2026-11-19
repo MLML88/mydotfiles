@@ -1,14 +1,30 @@
 use amane::{
     LayerWindow, Parent, Color, Full, Rectangle,
     Layer, Vertical, Zone, Align, Widget,
-    children, Row, Start, Center, End
+    children, Row, Start, Center, End, Monitor, Text
 };
 
 use crate::{
-    clock, battery
+    clock, battery, wifi
 };
 
-pub fn view() -> LayerWindow {
+pub fn view(monitor: &Monitor) -> LayerWindow {
+    let left = Row::new(children![
+        pill("Icon"),
+        pill("Workspace"),
+    ]).gap(6.0);
+
+    let middle = Row::new(children![
+        clock::view(),
+    ]).gap(6.0);
+
+    let right = Row::new(children![
+        pill("Volume"),
+        wifi::view(),
+        battery::view(),
+        pill("Notification")
+    ]).gap(6.0);
+
     LayerWindow::new()
         .width(Full)
         .height(35.0)
@@ -21,10 +37,24 @@ pub fn view() -> LayerWindow {
                 .height(Parent)
                 .fill(Color::TRANSPARENT)
                 .child(Row::new(children![
-                    section(clock::view(), Start),
-                    section(clock::view(), Center),
-                    section(battery::view(), End),
+                    section(left, Start),
+                    section(middle, Center),
+                    section(right, End),
                 ])),
+        )
+}
+
+fn pill(content: &str) -> Rectangle {
+    Rectangle::new()
+        .width(120.0)
+        .height(Parent)
+        .radius(Full)
+        .fill(Color::BLACK)
+        .align_child(Center, Center)
+        .child(
+            Text::new(content)
+                .size(18.0)
+                .color(Color::WHITE)
         )
 }
 
