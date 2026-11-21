@@ -2,6 +2,7 @@ mod bar;
 mod clock;
 mod battery;
 mod wifi;
+mod volume;
 
 use amane::{ App };
 

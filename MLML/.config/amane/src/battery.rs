@@ -5,10 +5,24 @@ use amane::{
 pub fn view() -> Rectangle {
     let battery = Battery::read();
 
-    let label = format!("Battery {}%", battery.percent());
+    let icon = match battery.percent() {
+        100.. => "󰁹",
+        90.. => "󰂂",
+        80.. => "󰂁",
+        70.. => "󰂀",
+        60.. => "󰁿",
+        50.. => "󰁾",
+        40.. => "󰁽",
+        30.. => "󰁼",
+        20.. => "󰁻",
+        10.. => "󰁺",
+        0.. => "󰂎",
+    };
+
+    let label = format!("{} {}%", icon, battery.percent());
 
     Rectangle::new()
-        .width(120.0)
+        .width(80.0)
         .height(Parent)
         .radius(Full)
         .fill(Color::BLACK)

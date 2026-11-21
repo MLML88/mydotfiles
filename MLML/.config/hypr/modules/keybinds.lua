@@ -35,7 +35,7 @@ hl.bind(mainMod .. " + C", hl.dsp.exec_cmd(editor))
 local shell = "vortex"
 
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(string.format("pkill quickshell || pkill qs; sleep 0.2; qs -c %s", shell)))
-hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("pkill amane || prime-run amane dev"))
+hl.bind(mainMod .. " + O", hl.dsp.exec_cmd("pkill amane || prime-run amane dev || amane dev"))
 
 -- Vortex
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(string.format("qs -c %s ipc call nightmenu toggle", shell)))

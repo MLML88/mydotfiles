@@ -5,12 +5,12 @@ use amane::{
 };
 
 use crate::{
-    clock, battery, wifi
+    clock, battery, wifi, volume
 };
 
-pub fn view(monitor: &Monitor) -> LayerWindow {
+pub fn view(_monitor: &Monitor) -> LayerWindow {
     let left = Row::new(children![
-        pill("Icon"),
+        pill("󰣇"),
         pill("Workspace"),
     ]).gap(6.0);
 
@@ -19,7 +19,7 @@ pub fn view(monitor: &Monitor) -> LayerWindow {
     ]).gap(6.0);
 
     let right = Row::new(children![
-        pill("Volume"),
+        volume::view(),
         wifi::view(),
         battery::view(),
         pill("Notification")
