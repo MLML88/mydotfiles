@@ -5,7 +5,6 @@ use amane::{
 
 pub fn view() -> Rectangle {
     let network = Network::read();
-
     let icon = match network.strength() {
         100.. => "󰤨",
         75.. => "󰤥",
@@ -22,7 +21,7 @@ pub fn view() -> Rectangle {
     };
 
     Rectangle::new()
-        .width(150.0)
+        .width(250.0)
         .height(Parent)
         .radius(Full)
         .fill(Color::BLACK)

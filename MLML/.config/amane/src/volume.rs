@@ -14,11 +14,11 @@ pub fn view() -> Rectangle {
             34..=66 => "",
             _ => "",
         };
-        format!("{icon} {}%", audio.volume())
+        format!("{icon}  {}%", audio.volume())
     };
 
     Rectangle::new()
-        .width(70.0)
+        .width(80.0)
         .height(Parent)
         .radius(Full)
         .fill(Color::BLACK)
