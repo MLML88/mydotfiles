@@ -5,10 +5,10 @@ edition = "2024"
 
 [[bin]]
 name = "amane-shell"
-path = '/home/excalibur/mydotfiles/MLML/.config/amane/src/main.rs'
+path = '/home/vortex/mydotfiles/MLML/.config/amane/testing/src/main.rs'
 
 [dependencies]
-amane = { path = '/home/excalibur/.cache/amane/library' }
+amane = { path = '/home/vortex/.cache/amane/library' }
 
 [profile.dev]
 debug = "line-tables-only"
