@@ -1,5 +1,6 @@
 use amane::{
     Monitor, LayerWindow, Full, Vertical, Layer, Zone, Margin,
+    Rectangle, Parent,
 };
 
 pub fn view(_monitor: &Monitor) -> LayerWindow {
@@ -11,4 +12,9 @@ pub fn view(_monitor: &Monitor) -> LayerWindow {
         .space(Zone::Reserve)
         .margin(Margin { top: 10, right: 0, bottom: 3, left: 0 })
         .click_through()
+        .child(
+            Rectangle::new()
+                .width(Parent)
+                .height(Parent)
+        )
 }

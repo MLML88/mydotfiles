@@ -2,7 +2,7 @@ use std::time::Duration;
 
 use amane::{
     Service, Text, Rectangle, Parent, 
-    Color, Center
+    Color, Center,
 };
 
 use crate::components::{
@@ -38,6 +38,6 @@ pub fn view() -> Rectangle {
         .size(18.0)
         .color(Color::WHITE);
 
-    pill(content, 120.0, Parent)
+    pill(content, Parent, Parent)
         .align_child(Center, Center)
 }

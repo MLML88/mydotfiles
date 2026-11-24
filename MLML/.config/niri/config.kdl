@@ -2624,7 +2624,7 @@ binds {
     Mod+M { spawn-sh "killall wlogout || wlogout"; }
     Mod+W { spawn "zen-browser"; }
     Mod+E { spawn "nautilus"; }
-    Mod+Space { spawn-sh "amane ipc call toggle-launcher"; }
+    Mod+Space { spawn-sh "amane ipc call toggle_stat"; }
     Mod+X { spawn-sh "pkill amane || amane dev"; }
 }
 
