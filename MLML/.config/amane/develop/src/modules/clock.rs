@@ -1,8 +1,12 @@
 use std::time::Duration;
 
 use amane::{
-    Full, Service, Text, Rectangle, Parent, 
+    Service, Text, Rectangle, Parent, 
     Color, Center
+};
+
+use crate::components::{
+   pill, 
 };
 
 const FORMAT: &str = "date '+%I:%M %p'";
@@ -30,16 +34,10 @@ impl Service for Clock {
 
 pub fn view() -> Rectangle {
     let clock = Clock::read();
+    let content = Text::new(&clock.time)
+        .size(18.0)
+        .color(Color::WHITE);
 
-    Rectangle::new()
-        .width(120.0)
-        .height(Parent)
-        .radius(Full)
-        .fill(Color::BLACK)
+    pill(content, 120.0, Parent)
         .align_child(Center, Center)
-        .child(
-            Text::new(&clock.time)
-                .size(18.0)
-                .color(Color::WHITE)
-        )
 }
