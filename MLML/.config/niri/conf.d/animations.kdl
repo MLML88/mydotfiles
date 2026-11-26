@@ -1,0 +1,12 @@
+// Animation settings.
+// The wiki explains how to configure individual animations:
+// https://niri-wm.github.io/niri/Configuration:-Animations
+animations {
+    window-open { curve "cubic-bezier" 0.25 0.1 0.25 1.0; }
+    window-close { curve "cubic-bezier" 0.25 0.1 0.25 1.0; }
+    // Uncomment to turn off all animations.
+    // off
+
+    // Slow down all animations by this factor. Values below 1 speed them up instead.
+    // slowdown 3.0
+}

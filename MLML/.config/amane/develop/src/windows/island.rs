@@ -3,10 +3,11 @@ use std::time::Duration;
 use amane::{
     Monitor, LayerWindow, Vertical, Layer, Zone,
     Margin, Animation, Service, Text, Parent, 
+    Color, Center, Row, children, Full,
 };
 
 use crate::modules::{
-    clock,
+    clock, battery, network, volume, brightness, 
 };
 
 use crate::components::{
@@ -23,7 +24,7 @@ impl Service for StatTray {
     fn new() -> Self {
         Self {
             open: false,
-            width: Animation::new(120.0),
+            width: Animation::new(675.0),
             height: Animation::new(40.0),
         }
     }
@@ -36,17 +37,24 @@ impl Service for StatTray {
 pub fn view(_monitor: &Monitor) -> LayerWindow {
     let stat = StatTray::read();
     let content = if stat.open {
-       pill(
-           Text::new("Testing"),
-           Parent,
-           Parent,
-       )
+        Row::new(children![
+           pill(
+               Text::new("Testing").color(Color::WHITE),
+               Parent, Parent,
+           ).align_child(Center, Center)
+        ]).width(Parent).justify(Center).align(Center).gap(5.0)
     } else {
-        clock::view()
+        Row::new(children![
+            brightness::view(),
+            network::view(),
+            clock::view(),
+            volume::view(),
+            battery::view(),
+        ]).width(Parent).justify(Center).align(Center).gap(5.0)
     };
 
     LayerWindow::new()
-        .width(stat.width.value())
+        .width(Full)
         .height(stat.height.value())
         .anchor_vertical(Vertical::Top)
         .layer(Layer::Top)
@@ -65,7 +73,7 @@ pub fn toggle_stat(_: &[String]) -> String {
         stat.height.to(500.0);
         String::from("opened")
     } else {
-        stat.width.to(120.0);
+        stat.width.to(675.0);
         stat.height.to(40.0);
         String::from("closed")
     }

@@ -1,0 +1,11 @@
+// To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
+// spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
+
+spawn-at-startup "amane" "dev"
+
+spawn-at-startup "awww-daemon"
+
+spawn-at-startup "blueman-applet"
+
+spawn-at-startup "fcitx5"
+spawn-at-startup "sunsetr"
